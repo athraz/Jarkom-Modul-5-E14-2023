@@ -326,6 +326,89 @@ OPTIONS=' > /etc/default/isc-dhcp-relay
 echo 'net.ipv4.ip_forward=1' > /etc/sysctl.conf
 
 service isc-dhcp-relay start
-
 ```
 
+$~$
+
+## Soal 1
+> Agar topologi yang kalian buat dapat mengakses keluar, kalian diminta untuk mengkonfigurasi Aura menggunakan iptables, tetapi tidak ingin menggunakan MASQUERADE.
+
+Berikut rule yang harus dimasukkan pada Aura supaya topologi dapat mengakses keluar:
+```sh
+iptables -t nat -A POSTROUTING -s 192.213.0.0/20 -o eth0 -j SNAT --to-source $(hostname -I | awk '{print $1}')
+```
+Dikarenakan mengakses jaringan luar merupakan tugas dari NAT, maka table yang digunakan adalah table nat, sehingga digunakan syntax `-t nat`. NAT bekerja dengan meng-translate IP pada topologi menjadi satu IP yang sama, sehingga chain yang digunakan adalah `POSTROUTING`, jump targetnya `SNAT` dan sourcenya adalah NID Topologi yaitu `192.213.0.0/20`. Interface Aura yang berhubungan dengan NAT adalah eth0, sehingga menggunakan syntax `-o eth0`. IP interface Aura dapat dilihat dengan command `hostname -I`, karena NAT terkoneksi dengan eth0 maka source IP merupakan IP yang pertama, sehingga digunakan syntax `--to-source $(hostname -I | awk '{print $1}')`.
+
+Berikut hasil tes dari beberapa node untuk mengakses jaringan luar:
+![image](https://github.com/athraz/Jarkom-Modul-5-E14-2023/assets/96050618/e0a8321e-4d81-43cf-866e-ed05c3428296)
+
+$~$
+
+## Soal 2
+> Kalian diminta untuk melakukan drop semua TCP dan UDP kecuali port 8080 pada TCP.
+
+Karena tidak ada ketentuan node apa yang harus menerapkan soal ini, maka kami memilih TurkRegion, berikut rule yang harus dimasukkan:
+```sh
+iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
+iptables -A INPUT -p tcp -j DROP
+iptables -A INPUT -p udp -j DROP
+```
+Untuk menyaring semua paket yang masuk sesuai ketentuan soal, maka kami menggunakan chain `INPUT`. Rule pertama digunakan untuk meng-accept paket TCP yang memasuki port 8080. Rule kedua digunakan untuk meng-drop semua paket TCP yang tidak memenuhi rule pertama. Rule ketiga digunakan untuk meng-drop semua paket UDP.
+
+Berikut hasil tes pada paket protokol TCP:
+![image](https://github.com/athraz/Jarkom-Modul-5-E14-2023/assets/96050618/a8522571-20b1-48b6-9604-8e1f0e4d2465)
+
+$~$
+
+## Soal 3
+> Kepala Suku North Area meminta kalian untuk membatasi DHCP dan DNS Server hanya dapat dilakukan ping oleh maksimal 3 device secara bersamaan, selebihnya akan di drop.
+
+Berikut rule yang harus dimasukkan pada Revolte (DHCP Server) dan Richter (DNS Server):
+```sh
+iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
+```
+Untuk menyaring ping yang masuk digunakan chain `INPUT` serta protokol `icmp`. Digunakan modul `connlimit` untuk membatasi jumlah koneksi paralel pada satu IP server, karena maksimal 3 device maka digunakan syntax `--connlimit-above 3`. Sedangkan syntax `--conlimit-mask 0` digunakan untuk menganggap ping dari IP yang berbeda merupakan koneksi yang berbeda.
+
+Berikut hasil dari ping IP Revolte pada 4 node secara langsung:
+![Screenshot 2023-12-16 182522](https://github.com/athraz/Jarkom-Modul-5-E14-2023/assets/96050618/2f6f78da-0908-4dda-bf4c-6452f39796c5)
+
+$~$
+
+## Soal 4
+> Lakukan pembatasan sehingga koneksi SSH pada Web Server hanya dapat dilakukan oleh masyarakat yang berada pada GrobeForest.
+
+$~$
+
+## Soal 5
+> Selain itu, akses menuju WebServer hanya diperbolehkan saat jam kerja yaitu Senin-Jumat pada pukul 08.00-16.00.
+
+$~$
+
+## Soal 6
+> Lalu, karena ternyata terdapat beberapa waktu di mana network administrator dari WebServer tidak bisa stand by, sehingga perlu ditambahkan rule bahwa akses pada hari Senin - Kamis pada jam 12.00 - 13.00 dilarang (istirahat maksi cuy) dan akses di hari Jumat pada jam 11.00 - 13.00 juga dilarang (maklum, Jumatan rek).
+
+$~$
+
+## Soal 7
+> Karena terdapat 2 WebServer, kalian diminta agar setiap client yang mengakses Sein dengan Port 80 akan didistribusikan secara bergantian pada Sein dan Stark secara berurutan dan request dari client yang mengakses Stark dengan port 443 akan didistribusikan secara bergantian pada Sein dan Stark secara berurutan.
+
+$~$
+
+## Soal 8
+> Karena berbeda koalisi politik, maka subnet dengan masyarakat yang berada pada Revolte dilarang keras mengakses WebServer hingga masa pencoblosan pemilu kepala suku 2024 berakhir. Masa pemilu (hingga pemungutan dan penghitungan suara selesai) kepala suku bersamaan dengan masa pemilu Presiden dan Wakil Presiden Indonesia 2024.
+
+$~$
+
+## Soal 9
+> Sadar akan adanya potensial saling serang antar kubu politik, maka WebServer harus dapat secara otomatis memblokir  alamat IP yang melakukan scanning port dalam jumlah banyak (maksimal 20 scan port) di dalam selang waktu 10 menit. 
+
+$~$
+
+## Soal 10
+> Karena kepala suku ingin tau paket apa saja yang di-drop, maka di setiap node server dan router ditambahkan logging paket yang di-drop dengan standard syslog level. 
+
+$~$
+
+## Kendala Pengerjaan
+
+$~$
