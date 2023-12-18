@@ -384,7 +384,7 @@ iptables -A INPUT -p tcp --dport 22 -s 192.213.4.0/22 -j ACCEPT
 iptables -A INPUT -p tcp --dport 22 -j DROP
 ```
 
-Perintah `iptables` yang Anda berikan adalah perintah untuk mengonfigurasi firewall di Linux menggunakan `iptables`. Mari kita uraikan perintah tersebut:
+Penjelasan:
 
 - `iptables -A INPUT`: Ini menambahkan (`-A` untuk append) sebuah aturan ke dalam rantai `INPUT`. Rantai `INPUT` digunakan untuk memutuskan nasib paket data yang masuk ke sistem.
 
@@ -453,7 +453,7 @@ iptables -A PREROUTING -t nat -p tcp --dport 80 -d 192.213.4.2 -j DNAT --to-dest
 
 ```
 
-Perintah `iptables` yang Anda berikan adalah untuk mengonfigurasi Network Address Translation (NAT) menggunakan `iptables` di Linux. Mari kita uraikan perintah tersebut:
+ Berikut penjelasannya:
 
 - `iptables -A PREROUTING`: Ini menambahkan sebuah aturan ke dalam rantai `PREROUTING` dari tabel `nat`. Rantai `PREROUTING` digunakan untuk mengatur alamat tujuan paket sebelum routing, yaitu sebelum keputusan mengenai ke mana paket akan dikirim diambil.
 
@@ -494,7 +494,7 @@ config di webserver:
 iptables -A INPUT -p tcp --dport 80 -m time --datestart "2024-02-14T00:00" --datestop "2024-06-26T23:59" -s 192.213.0.0/30 -j DROP
 ```
 
-Perintah `iptables` yang Anda berikan adalah untuk mengonfigurasi aturan firewall di Linux menggunakan `iptables`. Aturan ini secara spesifik menetapkan kondisi berdasarkan waktu dan sumber alamat IP. Mari kita uraikan perintah tersebut:
+ Berikut penjelasannya:
 
 - `iptables -A INPUT`: Ini menambahkan aturan ke rantai `INPUT`. Rantai `INPUT` digunakan untuk memutuskan nasib paket yang masuk ke sistem.
 
@@ -525,13 +525,13 @@ iptables -A FORWARD -m recent --name scanning_tab --set -j ACCEPT
 
 ```
 
-Perintah `iptables -N scanning_tab` adalah untuk membuat rantai baru dalam konfigurasi `iptables`. Mari kita jelaskan bagian perintah ini:
+ Berikut penjelasannya:
 
 - `iptables`: Ini adalah perintah untuk mengonfigurasi `iptables`, sebuah tool untuk mengatur aturan firewall di Linux.
 
 - `-N scanning_tab`: Opsi `-N` digunakan untuk membuat rantai baru. `scanning_tab` di sini adalah nama yang diberikan untuk rantai baru ini.
 
-Perintah `iptables` yang Anda berikan digunakan untuk mengatur aturan dalam `iptables` untuk memblokir percobaan akses berulang ke sistem yang Anda lindungi. Ini adalah bagian dari mekanisme pertahanan untuk melindungi terhadap serangan seperti brute-force atau penelusuran port (port scanning). Berikut penjelasan detailnya:
+ Berikut penjelasannya:
 
 - `iptables -A INPUT`: Ini menambahkan aturan ke rantai `INPUT`, yang mengatur paket data yang masuk ke sistem.
 
@@ -561,7 +561,7 @@ config:
 ```sh
 iptables -A INPUT -j LOG --log-level debug --log-prefix 'drop packet' -m limit --limit 1/second --limit-burst 10
 ```
-Perintah `iptables` yang Anda berikan digunakan untuk membuat aturan log pada firewall Linux menggunakan `iptables`. Aturan ini khususnya mencatat paket yang melewati rantai `INPUT`. Mari kita uraikan perintah tersebut:
+ Berikut penjelasannya:
 
 - `iptables -A INPUT`: Ini menambahkan aturan ke rantai `INPUT`, yang mengatur paket yang masuk ke host.
 
