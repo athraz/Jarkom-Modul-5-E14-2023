@@ -397,11 +397,16 @@ Penjelasan:
 - `-j ACCEPT`: Ini menentukan tindakan yang harus diambil jika sebuah paket cocok dengan kriteria yang didefinisikan di atas. Dalam hal ini, `-j ACCEPT` berarti paket tersebut akan diterima.
 
 adapula untuk selain subnet tersebut akan didrop.
+
+Berikut hasil pengujian rule:
+
+![no4 (1)](https://github.com/athraz/Jarkom-Modul-5-E14-2023/assets/96050618/90d139a1-f6d1-45a5-b824-7d7da39b0577)
+![no4 (2)](https://github.com/athraz/Jarkom-Modul-5-E14-2023/assets/96050618/164d3ecb-e14b-47ab-be6a-c0ae8a148ea2)
+
 $~$
 
 ## Soal 5
 > Selain itu, akses menuju WebServer hanya diperbolehkan saat jam kerja yaitu Senin-Jumat pada pukul 08.00-16.00.
-
 
 Config pada webserver 
 
@@ -426,6 +431,10 @@ iptables -A INPUT -p tcp --dport 22 -m time --weekdays Mon,Tue,Wed,Thu,Fri --tim
 
 - `-j ACCEPT`: Paket yang cocok dengan kriteria di atas akan diterima.
 
+Berikut hasil pengujian rule:
+
+![no5](https://github.com/athraz/Jarkom-Modul-5-E14-2023/assets/96050618/fbb7a464-f431-4245-9b4f-45c58f4e09a1)
+
 $~$
 
 ## Soal 6
@@ -448,6 +457,12 @@ Berikut penjelasannya:
 - `-m time`: Modul ini digunakan untuk membatasi aturan berdasarkan waktu. Dalam hal ini, aturan akan berlaku hanya pada waktu tertentu.
 
 Paket akan didrop pada config pertama untuk hari senin - kamis jam 12.00-13.00 lalu jumat pada jam 11.00-13.00
+
+Berikut hasil pengujian rule:
+
+![no6 (1)](https://github.com/athraz/Jarkom-Modul-5-E14-2023/assets/96050618/4d4e53e9-d99e-40e3-911d-251ff226b9bf)
+![no6 (2)](https://github.com/athraz/Jarkom-Modul-5-E14-2023/assets/96050618/6e74cc15-da85-4367-b8ed-6ba0e1e97a88)
+
 $~$
 
 ## Soal 7
@@ -490,7 +505,13 @@ iptables -A PREROUTING -t nat -p tcp --dport 443 -d 192.213.0.14 -m statistic --
 iptables -A PREROUTING -t nat -p tcp --dport 443 -d 192.213.0.14 -j DNAT --to-destination 192.213.4.2
 ```
 
-penjelasan mirip seperti config port 80 akan tetapi berbeda dalam penerapan portnya  port 443.
+penjelasan mirip seperti config port 80 akan tetapi berbeda dalam penerapan portnya port 443.
+
+Berikut hasil pengujian rule:
+
+![no7 (1)](https://github.com/athraz/Jarkom-Modul-5-E14-2023/assets/96050618/0959c9be-4246-4f25-a3e3-a29647c56c2a)
+![no7 (2)](https://github.com/athraz/Jarkom-Modul-5-E14-2023/assets/96050618/982dba4b-f4d3-4c15-85dd-fb1dc565f325)
+
 $~$
 
 ## Soal 8
@@ -518,10 +539,15 @@ iptables -A INPUT -p tcp --dport 80 -m time --datestart "2024-02-14T00:00" --dat
 
 - `-j DROP`: Ini menentukan tindakan yang harus diambil jika sebuah paket cocok dengan kriteria yang didefinisikan di atas. Dalam hal ini, `-j DROP` berarti paket tersebut akan dibuang (tidak diterima dan tidak ada respons dikirim kembali ke pengirim).
 
+Berikut hasil pengujian rule:
+
+![no8](https://github.com/athraz/Jarkom-Modul-5-E14-2023/assets/96050618/524f9caa-050b-4362-a136-8f912bd61c31)
+
+$~$
+
 ## Soal 9
 > Sadar akan adanya potensial saling serang antar kubu politik, maka WebServer harus dapat secara otomatis memblokir  alamat IP yang melakukan scanning port dalam jumlah banyak (maksimal 20 scan port) di dalam selang waktu 10 menit. 
 
-$~$
 config di webserver:
 
 ```sh
@@ -559,10 +585,10 @@ lalu untuk forward sendiri sama seperti config input akan tetapi forward adalah 
 
 Jika tidak melanggar aturan akan di accept.
 
+$~$
+
 ## Soal 10
 > Karena kepala suku ingin tau paket apa saja yang di-drop, maka di setiap node server dan router ditambahkan logging paket yang di-drop dengan standard syslog level. 
-
-$~$
 
 config:
 
@@ -585,6 +611,11 @@ iptables -A INPUT -j LOG --log-level debug --log-prefix 'drop packet' -m limit -
 
 - `--limit-burst 10`: Ini menetapkan jumlah "burst" untuk batas. Dalam konteks ini, `iptables` akan memungkinkan hingga 10 paket cocok sekaligus sebelum membatasi pencatatan ke satu paket per detik. Ini berguna untuk situasi di mana ada ledakan singkat dari banyak paket yang cocok.
 
+$~$
+
 ## Kendala Pengerjaan
+- WSL tidak mengsupport beberapa modul seperti connlimit, sehingga perlu menginstall VM 😍😍🥰🏳
+
+![Screenshot 2023-09-18 213304](https://github.com/athraz/Jarkom-Modul-1-E14-2023/assets/96050618/df994f2b-f814-4243-bfa6-0a242a345774)
 
 $~$
