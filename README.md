@@ -439,6 +439,14 @@ iptables -A INPUT -p tcp --dport 22 -m time --weekdays Fri --timestart 11:00 --t
 
 Berikut penjelasannya:
 
+- `iptables -A INPUT`: Ini menambahkan aturan ke rantai `INPUT` dari iptables. Rantai `INPUT` mengatur paket yang masuk ke host.
+
+- `-p tcp`: Aturan ini hanya berlaku untuk protokol TCP, yang umumnya digunakan untuk SSH.
+
+- `--dport 22`: Aturan ini berlaku untuk paket yang ditujukan ke port 22, port standar untuk SSH.
+
+- `-m time`: Modul ini digunakan untuk membatasi aturan berdasarkan waktu. Dalam hal ini, aturan akan berlaku hanya pada waktu tertentu.
+
 Paket akan didrop pada config pertama untuk hari senin - kamis jam 12.00-13.00 lalu jumat pada jam 11.00-13.00
 $~$
 
